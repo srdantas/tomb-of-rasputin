@@ -1,4 +1,5 @@
 import sys
+from os import path
 
 from game.sprites import *
 
@@ -11,14 +12,14 @@ class Game:
         self.clock = pg.time.Clock()
         self.dt = self.clock.tick(FPS) / 1000
         pg.key.set_repeat()
+        self.map_data = []
         self.load_data()
 
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.player = Player(self, 10, 10)
 
-        for x in range(10, 20):
-            Wall(self, x, 5)
+        self.load_walls()
 
         self.playing = False
 
@@ -27,8 +28,16 @@ class Game:
         pg.quit()
         sys.exit()
 
+    def load_walls(self):
+        for line, tiles in enumerate(self.map_data):
+            for col, tile in enumerate(tiles):
+                if tile == '1':
+                    Wall(self, col, line)
+
     def load_data(self):
-        pass
+        with open(path.join('maps/map.txt'), 'rt') as f:
+            for line in f:
+                self.map_data.append(line)
 
     def run(self):
         self.playing = True
