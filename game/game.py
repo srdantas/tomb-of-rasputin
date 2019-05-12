@@ -1,46 +1,43 @@
 import sys
-from os import path
 
-from game.sprites import *
+import pygame as pg
+
+from game.camera import Camera
+from game.sprites import Player
+from game.tilemap import Map
+from settings import *
 
 
 class Game:
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
+        pg.key.set_repeat()
+
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+
         self.clock = pg.time.Clock()
         self.dt = self.clock.tick(FPS) / 1000
-        pg.key.set_repeat()
-        self.map_data = []
-        self.load_data()
 
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+
         self.player = Player(self, 10, 10)
 
-        self.load_walls()
-
         self.playing = False
+
+        self.map = Map('maps/map.txt')
+        self.camera = Camera(self.map.width, self.map.height)
 
     @staticmethod
     def quit():
         pg.quit()
         sys.exit()
 
-    def load_walls(self):
-        for line, tiles in enumerate(self.map_data):
-            for col, tile in enumerate(tiles):
-                if tile == '1':
-                    Wall(self, col, line)
-
-    def load_data(self):
-        with open(path.join('maps/map.txt'), 'rt') as f:
-            for line in f:
-                self.map_data.append(line)
-
     def run(self):
         self.playing = True
+
+        self.map.load(self)
 
         while self.playing:
             self.events()
@@ -49,6 +46,7 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
+        self.camera.update(self.player)
 
     def draw_grid(self):
         for x in range(0, WIDTH, TILE_SIZE):
@@ -59,7 +57,10 @@ class Game:
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)
         self.draw_grid()
-        self.all_sprites.draw(self.screen)
+
+        for sprite in self.all_sprites:
+            self.screen.blit(sprite.image, self.camera.apply(sprite))
+
         pg.display.flip()
 
     def events(self):
