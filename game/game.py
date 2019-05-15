@@ -1,6 +1,5 @@
 import sys
-
-import pygame as pg
+from os import path
 
 from game.camera import Camera
 from game.sprites import Player
@@ -14,6 +13,8 @@ class Game:
         pg.display.set_caption(TITLE)
         pg.key.set_repeat()
 
+        self.playing = False
+
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
 
         self.clock = pg.time.Clock()
@@ -22,17 +23,11 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
 
+        self.player_img = pg.image.load(path.join('image', PLAYER_IMG)).convert_alpha()
         self.player = Player(self, 10, 10)
-
-        self.playing = False
 
         self.map = Map('maps/map.txt')
         self.camera = Camera(self.map.width, self.map.height)
-
-    @staticmethod
-    def quit():
-        pg.quit()
-        sys.exit()
 
     def run(self):
         self.playing = True
@@ -66,21 +61,18 @@ class Game:
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.quit()
+                self.__quit__()
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
-                    self.quit()
-                if event.key == pg.K_LEFT:
-                    self.player.move(dx=-1)
-                if event.key == pg.K_RIGHT:
-                    self.player.move(dx=1)
-                if event.key == pg.K_UP:
-                    self.player.move(dy=-1)
-                if event.key == pg.K_DOWN:
-                    self.player.move(dy=1)
+                    self.__quit__()
 
     def show_start_screen(self):
         pass
 
     def show_go_screen(self):
         pass
+
+    @staticmethod
+    def __quit__():
+        pg.quit()
+        sys.exit()
