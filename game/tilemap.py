@@ -1,5 +1,5 @@
-from game.sprites import Wall
-from settings import *
+from settings import TILE_SIZE
+from sprite.wall import Wall
 
 
 class Map:

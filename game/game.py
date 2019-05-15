@@ -2,9 +2,9 @@ import sys
 from os import path
 
 from game.camera import Camera
-from game.sprites import Player
 from game.tilemap import Map
 from settings import *
+from sprite.player import Player
 
 
 class Game:
@@ -24,6 +24,7 @@ class Game:
         self.walls = pg.sprite.Group()
 
         self.player_img = pg.image.load(path.join('image', PLAYER_IMG)).convert_alpha()
+        self.player_img = pg.transform.scale(self.player_img, (TILE_SIZE, TILE_SIZE))
         self.player = Player(self, 10, 10)
 
         self.map = Map('maps/map.txt')
