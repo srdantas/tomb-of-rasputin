@@ -1,5 +1,4 @@
 import sys
-from os import path
 
 from game.camera import Camera
 from game.tilemap import Map
@@ -23,9 +22,7 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
 
-        self.player_img = pg.image.load(path.join('image', PLAYER_IMG)).convert_alpha()
-        self.player_img = pg.transform.scale(self.player_img, (TILE_SIZE, TILE_SIZE))
-        self.player = Player(self, 10, 10)
+        self.player = Player(self, 100, 100)
 
         self.map = Map('maps/map.txt')
         self.camera = Camera(self.map.width, self.map.height)
@@ -41,6 +38,7 @@ class Game:
             self.draw()
 
     def update(self):
+        self.player.update()
         self.all_sprites.update()
         self.camera.update(self.player)
 
