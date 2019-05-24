@@ -55,6 +55,9 @@ class Game:
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
 
+        # TODO its are used for tests
+        pg.draw.rect(self.screen, GREEN, self.camera.apply(self.player), 2)
+
         pg.display.flip()
 
     def events(self):
