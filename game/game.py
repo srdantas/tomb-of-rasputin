@@ -1,9 +1,11 @@
 import sys
 
 from game.camera import Camera
-from game.tilemap import Map
+from game.tilemap import TiledMap
 from settings import *
 from sprite.player import Player
+from sprite.wall import Obstacle
+from sprite.zombie import Zombie
 
 
 class Game:
@@ -23,15 +25,26 @@ class Game:
         self.walls = pg.sprite.Group()
         self.zombies = pg.sprite.Group()
 
-        self.player = Player(self, 100, 100)
+        self.map = TiledMap('maps/tiled1.tmx')
+        self.map_image = self.map.make_map()
+        self.map_rect = self.map_image.get_rect()
 
-        self.map = Map('maps/map.txt')
+        for tile_object in self.map.tiled_map.objects:
+            if tile_object.name == 'player':
+                self.player = Player(self, tile_object.x * self.map.scale, tile_object.y * self.map.scale)
+            if tile_object.name == 'wall':
+                Obstacle(self,
+                         tile_object.x * self.map.scale,
+                         tile_object.y * self.map.scale,
+                         tile_object.width * self.map.scale,
+                         tile_object.height * self.map.scale)
+            if tile_object.name == 'zombie':
+                Zombie(self, tile_object.x * self.map.scale, tile_object.y * self.map.scale)
+
         self.camera = Camera(self.map.width, self.map.height)
 
     def run(self):
         self.playing = True
-
-        self.map.load(self)
 
         while self.playing:
             self.events()
@@ -42,21 +55,11 @@ class Game:
         self.all_sprites.update()
         self.camera.update(self.player)
 
-    def draw_grid(self):
-        for x in range(0, WIDTH, TILE_SIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
-        for y in range(0, HEIGHT, TILE_SIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
-
     def draw(self):
-        self.screen.fill(BACKGROUND_COLOR)
-        self.draw_grid()
+        self.screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))
 
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
-
-        # TODO its are used for tests
-        pg.draw.rect(self.screen, GREEN, self.camera.apply(self.player), 2)
 
         pg.display.flip()
 
