@@ -21,6 +21,7 @@ class Game:
 
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
+        self.zombies = pg.sprite.Group()
 
         self.player = Player(self, 100, 100)
 
@@ -38,7 +39,6 @@ class Game:
             self.draw()
 
     def update(self):
-        self.player.update()
         self.all_sprites.update()
         self.camera.update(self.player)
 

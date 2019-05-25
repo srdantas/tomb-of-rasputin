@@ -16,8 +16,8 @@ YELLOW = (255, 255, 0)
 
 WIDTH = 1024
 HEIGHT = 768
-FPS = 60
-TITLE = "Tomb of Rasputin"
+FPS = 64
+TITLE = 'Tomb of Rasputin'
 BACKGROUND_COLOR = DARKGREY
 
 TILE_SIZE = 60
@@ -25,16 +25,7 @@ GRID_WIDTH = WIDTH / TILE_SIZE
 GRID_HEIGHT = HEIGHT / TILE_SIZE
 
 PLAYER_HIT_RECT = pg.Rect(0, 0, TILE_SIZE, TILE_SIZE)
-PLAYER_SPEED = .1
+MOVE_SPEED = .2
 
-PLAYER_FRONT_STOP = 'image/player/front/front_stop.png'
-PLAYER_FRONT_WALK = 'image/player/front/front_walk.png'
-
-PLAYER_BACK_STOP = 'image/player/back/back_stop.png'
-PLAYER_BACK_WALK = 'image/player/back/back_walk.png'
-
-PLAYER_LEFT_STOP = 'image/player/left/left_stop.png'
-PLAYER_LEFT_WALK = 'image/player/left/left_walk.png'
-
-PLAYER_RIGHT_STOP = 'image/player/right/right_stop.png'
-PLAYER_RIGHT_WALK = 'image/player/right/right_walk.png'
+PLAYER_BASE_PATH = 'player'
+ZOMBIE_BASE_PATH = 'zombie'

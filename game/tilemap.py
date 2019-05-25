@@ -1,5 +1,6 @@
 from settings import TILE_SIZE
 from sprite.wall import Wall
+from sprite.zombie import Zombie
 
 
 class Map:
@@ -20,3 +21,5 @@ class Map:
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Wall(game, col, line)
+                if tile == 'Z':
+                    Zombie(game, col * TILE_SIZE, line * TILE_SIZE)
