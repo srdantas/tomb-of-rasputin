@@ -1,9 +1,7 @@
 import sys
 
-from pygame import QUIT, KEYDOWN, K_ESCAPE
-from pygame import display, quit
+from pygame import QUIT, KEYDOWN, K_ESCAPE, display, quit, time, init, key, font
 from pygame import event as key_event
-from pygame import time, init, key, font
 from pygame.sprite import Group
 
 from game.camera import Camera
@@ -25,7 +23,7 @@ class Game:
         self.clock = time.Clock()
         self.dt = self.clock.tick(FPS) / 1000
 
-        # self.font = font.Font('Comic Sans MS', 30)
+        self.labels = list()
 
         self.all_sprites = Group()
 
@@ -50,6 +48,9 @@ class Game:
 
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
+
+        for label in self.labels:
+            self.screen.blit(label.surface, self.camera.apply_rect(label.rect))
 
         display.flip()
 
