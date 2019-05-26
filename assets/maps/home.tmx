@@ -25,9 +25,7 @@
  </layer>
  <objectgroup id="5" name="obstacles">
   <object id="1" name="player" x="288.545" y="278.909" width="15.2716" height="14.724"/>
-  <object id="2" name="exit" x="271.819" y="305" width="48.3625" height="14.724"/>
-  <object id="3" name="wall" x="224.36" y="305" width="47.2768" height="14.3604"/>
-  <object id="4" name="wall" x="320.182" y="305.002" width="47.2769" height="15"/>
+  <object id="4" name="wall" x="224.557" y="305.002" width="142.902" height="15"/>
   <object id="5" name="wall" x="224.49" y="225" width="12.008" height="79.9876"/>
   <object id="6" name="wall" x="355.266" y="225" width="12.376" height="79.6193"/>
   <object id="7" name="wall" x="112.756" y="225" width="111.726" height="14.9902"/>

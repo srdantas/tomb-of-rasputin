@@ -31,15 +31,28 @@ class Game:
 
         self.camera = Camera(self.level.map.width, self.level.map.height)
 
+    def update_level(self, level):
+        self.labels = list()
+
+        self.level.player.kill()
+
+        self.level = level
+        self._update_camera()
+
+        self.update()
+        self.draw()
+
     def run(self):
         self.playing = True
 
         while self.playing:
             self.events()
             self.update()
-            self.draw()
+            if not self.level.has_menu:
+                self.draw()
 
     def update(self):
+        self.level.update()
         self.all_sprites.update()
         self.camera.update(self.level.player)
 
@@ -55,18 +68,25 @@ class Game:
         display.flip()
 
     def events(self):
-        for event in key_event.get():
-            if event.type == QUIT:
-                self.__quit__()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+        events = key_event.get()
+        if not self.level.has_menu:
+            for event in events:
+                if event.type == QUIT:
                     self.__quit__()
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        self.__quit__()
+
+        self.level.events(events)
 
     def show_start_screen(self):
         pass
 
     def show_go_screen(self):
         pass
+
+    def _update_camera(self):
+        self.camera = Camera(self.level.map.width, self.level.map.height)
 
     @staticmethod
     def __quit__():

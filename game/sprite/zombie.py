@@ -1,5 +1,5 @@
-from settings import ZOMBIE_BASE_PATH, DIRECTION_RIGHT, DIRECTION_LEFT, DIRECTION_FRONT, DIRECTION_BACK, MOVE_SPEED
 from game.sprite import animation_sprite
+from settings import ZOMBIE_BASE_PATH, DIRECTION_RIGHT, DIRECTION_LEFT, DIRECTION_FRONT, DIRECTION_BACK, MOVE_SPEED
 
 
 class Zombie(animation_sprite.AnimationSprite):
