@@ -91,7 +91,7 @@ class AnimationSprite(sprite.Sprite):
                 self.image = self.right_stop.getCurrentFrame()
 
     def _make_collision_with_walls(self):
-        hits = sprite.spritecollide(self, self.game.walls, False)
+        hits = sprite.spritecollide(self, self.game.level.walls, False)
         if hits:
             if self.speed_y > 0:
                 self.y = hits[0].rect.top - self.rect.height

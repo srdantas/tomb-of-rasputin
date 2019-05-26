@@ -4,8 +4,7 @@ from sprite import animation_sprite
 
 class Zombie(animation_sprite.AnimationSprite):
 
-    def __init__(self, game, x, y):
-        groups = game.all_sprites, game.zombies
+    def __init__(self, game, groups, x, y):
         super().__init__(game, ZOMBIE_BASE_PATH, x, y, groups)
 
     def update(self):
@@ -38,7 +37,7 @@ class Zombie(animation_sprite.AnimationSprite):
             self.is_walk = False
 
     def _get_distance_player_x(self):
-        return self.x - self.game.player.x
+        return self.x - self.game.level.player.x
 
     def _get_distance_player_y(self):
-        return self.y - self.game.player.y
+        return self.y - self.game.level.player.y

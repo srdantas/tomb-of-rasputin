@@ -4,8 +4,9 @@ from game.camera import Camera
 from game.tilemap import TiledMap
 from settings import *
 from sprite.player import Player
-from sprite.wall import Obstacle
+from sprite.obstacle import Obstacle
 from sprite.zombie import Zombie
+from game.home import Home
 
 
 class Game:
@@ -22,26 +23,10 @@ class Game:
         self.dt = self.clock.tick(FPS) / 1000
 
         self.all_sprites = pg.sprite.Group()
-        self.walls = pg.sprite.Group()
-        self.zombies = pg.sprite.Group()
 
-        self.map = TiledMap('maps/tiled1.tmx')
-        self.map_image = self.map.make_map()
-        self.map_rect = self.map_image.get_rect()
+        self.level = Home(self)
 
-        for tile_object in self.map.tiled_map.objects:
-            if tile_object.name == 'player':
-                self.player = Player(self, tile_object.x * self.map.scale, tile_object.y * self.map.scale)
-            if tile_object.name == 'wall':
-                Obstacle(self,
-                         tile_object.x * self.map.scale,
-                         tile_object.y * self.map.scale,
-                         tile_object.width * self.map.scale,
-                         tile_object.height * self.map.scale)
-            if tile_object.name == 'zombie':
-                Zombie(self, tile_object.x * self.map.scale, tile_object.y * self.map.scale)
-
-        self.camera = Camera(self.map.width, self.map.height)
+        self.camera = Camera(self.level.map.width, self.level.map.height)
 
     def run(self):
         self.playing = True
@@ -53,10 +38,10 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
-        self.camera.update(self.player)
+        self.camera.update(self.level.player)
 
     def draw(self):
-        self.screen.blit(self.map_image, self.camera.apply_rect(self.map_rect))
+        self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
 
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
