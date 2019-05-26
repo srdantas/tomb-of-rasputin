@@ -19,7 +19,7 @@ def get_animation_sheet(file, rows=1, cols=1):
 class AnimationSprite(sprite.Sprite):
     def __init__(self, game, images_base_path, x, y, groups):
         self.game = game
-        self.images_path = path.join("images", images_base_path)
+        self.images_path = path.join("assets/images", images_base_path)
         self.x = x
         self.y = y
         self.groups = groups

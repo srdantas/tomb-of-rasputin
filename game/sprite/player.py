@@ -3,7 +3,7 @@ from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN, key
 
 from settings import MOVE_SPEED, TILE_SIZE, DIRECTION_FRONT, DIRECTION_BACK, DIRECTION_LEFT, DIRECTION_RIGHT, \
     PLAYER_BASE_PATH
-from sprite import animation_sprite
+from game.sprite import animation_sprite
 
 
 def collide_hit_rect(one, two):

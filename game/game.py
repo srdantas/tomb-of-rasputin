@@ -1,28 +1,33 @@
 import sys
 
+from pygame import QUIT, KEYDOWN, K_ESCAPE
+from pygame import display, quit
+from pygame import event as key_event
+from pygame import time, init, key, font
+from pygame.sprite import Group
+
 from game.camera import Camera
-from game.tilemap import TiledMap
-from settings import *
-from sprite.player import Player
-from sprite.obstacle import Obstacle
-from sprite.zombie import Zombie
 from game.home import Home
+from settings import *
 
 
 class Game:
     def __init__(self):
-        pg.init()
-        pg.display.set_caption(TITLE)
-        pg.key.set_repeat()
+        init()
+        font.init()
+        display.set_caption(TITLE)
+        key.set_repeat()
 
         self.playing = False
 
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.screen = display.set_mode((WIDTH, HEIGHT))
 
-        self.clock = pg.time.Clock()
+        self.clock = time.Clock()
         self.dt = self.clock.tick(FPS) / 1000
 
-        self.all_sprites = pg.sprite.Group()
+        # self.font = font.Font('Comic Sans MS', 30)
+
+        self.all_sprites = Group()
 
         self.level = Home(self)
 
@@ -46,14 +51,14 @@ class Game:
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
 
-        pg.display.flip()
+        display.flip()
 
     def events(self):
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
+        for event in key_event.get():
+            if event.type == QUIT:
                 self.__quit__()
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
                     self.__quit__()
 
     def show_start_screen(self):
@@ -64,5 +69,5 @@ class Game:
 
     @staticmethod
     def __quit__():
-        pg.quit()
+        quit()
         sys.exit()

@@ -1,9 +1,8 @@
 from pygame.sprite import Group
 
+from game.sprite.obstacle import Obstacle
+from game.sprite.player import Player
 from game.tilemap import TiledMap
-from sprite.player import Player
-from sprite.obstacle import Obstacle
-from sprite.zombie import Zombie
 
 
 class Home:
@@ -11,7 +10,7 @@ class Home:
         self.walls = Group()
         self.zombies = Group()
 
-        self.map = TiledMap('maps/tiled1.tmx')
+        self.map = TiledMap('assets/maps/home.tmx')
         self.map_image = self.map.make_map()
         self.map_rect = self.map_image.get_rect()
 
@@ -25,6 +24,3 @@ class Home:
                          tile_object.y * self.map.scale,
                          tile_object.width * self.map.scale,
                          tile_object.height * self.map.scale)
-            if tile_object.name == 'zombie':
-                Zombie(game, (game.all_sprites, self.zombies), tile_object.x * self.map.scale,
-                       tile_object.y * self.map.scale)

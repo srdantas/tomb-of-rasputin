@@ -3,7 +3,7 @@ from settings import *
 
 class Camera:
     def __init__(self, width, height):
-        self.camera = pg.Rect(0, 0, width, height)
+        self.camera = Rect(0, 0, width, height)
         self.width = width
         self.height = height
 
@@ -23,4 +23,4 @@ class Camera:
         x = max(-(self.width - WIDTH), x)
         y = max(-(self.height - HEIGHT), y)
 
-        self.camera = pg.Rect(x, y, self.width, self.height)
+        self.camera = Rect(x, y, self.width, self.height)

@@ -1,6 +1,5 @@
-import pygame as pg
+from pygame import Rect
 
-# define some constants
 DIRECTION_FRONT = 'front'
 DIRECTION_BACK = 'back'
 DIRECTION_LEFT = 'left'
@@ -24,8 +23,8 @@ TILE_SIZE = 64
 GRID_WIDTH = WIDTH / TILE_SIZE
 GRID_HEIGHT = HEIGHT / TILE_SIZE
 
-PLAYER_HIT_RECT = pg.Rect(0, 0, TILE_SIZE, TILE_SIZE)
-MOVE_SPEED = .2
+PLAYER_HIT_RECT = Rect(0, 0, TILE_SIZE, TILE_SIZE)
+MOVE_SPEED = .8
 
 PLAYER_BASE_PATH = 'player'
 ZOMBIE_BASE_PATH = 'zombie'
