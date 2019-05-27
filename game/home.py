@@ -8,13 +8,15 @@ from game.label import Label
 from game.sprite.obstacle import Obstacle
 from game.sprite.player import Player
 from game.tilemap import TiledMap
-from settings import BLACK, WIDTH, HEIGHT
+from settings import DARKGREY, WIDTH, HEIGHT
 
 
 class Home:
     def __init__(self, game):
         self.game = game
         self.walls = Group()
+        self.bullets = Group()
+        self.zombies = Group()
         self.adventurers = Group()
 
         self.adventures_menu = pygameMenu.Menu(game.screen, WIDTH, HEIGHT, 'assets/fonts/blocks.ttf',
@@ -38,6 +40,7 @@ class Home:
                 self._create_player(tile_object)
 
     def update(self):
+        self._info()
         collisions = spritecollide(self.player, self.adventurers, False, collide_circle)
         if collisions:
             self.adventures_menu.enable()
@@ -62,7 +65,8 @@ class Home:
         self.has_menu = False
 
     def _show_menu(self):
-        self.has_menu = True
+        if self.adventures_menu.is_enabled():
+            self.has_menu = True
 
     def _create_list_adventures(self):
         for adventure in adventures.adventures(self.game):
@@ -76,15 +80,15 @@ class Home:
 
     def _create_adventurer(self, game, tile_object):
         game.labels.append(
-            Label('Adventurer', 'assets/fonts/blocks.ttf', (tile_object.x - tile_object.width) * self.map.scale,
-                  (tile_object.y + tile_object.height) * self.map.scale, font_size=16, color=BLACK))
+            Label('Adventurer', 'assets/fonts/pixel_square.ttf', (tile_object.x - tile_object.width) * self.map.scale,
+                  (tile_object.y + tile_object.height) * self.map.scale, font_size=16, color=DARKGREY))
         self._create_obstacle(tile_object, self.walls)
         return self._create_obstacle(tile_object, self.adventurers)
 
     def _create_ranker(self, tile_object):
         self.game.labels.append(
-            Label('Ranking', 'assets/fonts/blocks.ttf', (tile_object.x - tile_object.width) * self.map.scale,
-                  tile_object.y * self.map.scale, font_size=16, color=BLACK))
+            Label('Ranking', 'assets/fonts/pixel_square.ttf', (tile_object.x - tile_object.width) * self.map.scale,
+                  tile_object.y * self.map.scale, font_size=16, color=DARKGREY))
         self._create_obstacle(tile_object, self.walls)
 
     def _create_obstacle(self, tile_object, group):
@@ -94,3 +98,8 @@ class Home:
                         tile_object.y * self.map.scale,
                         tile_object.width * self.map.scale,
                         tile_object.height * self.map.scale)
+
+    def _info(self):
+        self.game.infos.append(Label('Home', "assets/fonts/blocks.ttf", 10, 10, font_size=42))
+        self.game.infos.append(
+            Label('Select a adventure for play it', "assets/fonts/future_narrow.ttf", 10, 80, font_size=16))

@@ -1,5 +1,6 @@
-from pygame.sprite import Group
+from pygame.sprite import Group, spritecollide
 
+from game.label import Label
 from game.sprite.obstacle import Obstacle
 from game.sprite.player import Player
 from game.sprite.zombie import Zombie
@@ -22,6 +23,7 @@ class TombOfRasputin:
     def __init__(self, game):
         self.game = game
         self.zombies = Group()
+        self.bullets = Group()
         self.walls = Group()
 
         self.map = TiledMap('assets/maps/tomb_of_raspitun/level_1.tmx')
@@ -29,6 +31,7 @@ class TombOfRasputin:
         self.map_rect = self.map_image.get_rect()
 
         self.has_menu = False
+        self.updated = False
 
         for tile_object in self.map.tiled_map.objects:
             if tile_object.name == 'wall':
@@ -39,10 +42,17 @@ class TombOfRasputin:
                 self._create_player(tile_object)
 
     def update(self):
-        pass
+        self._info()
+        self.game_over()
+
+        self.updated = True
 
     def events(self, events):
         pass
+
+    def game_over(self):
+        if spritecollide(self.player, self.zombies, False) and self.updated:
+            self.game.game_over = True
 
     def _create_player(self, tile_object):
         self.player = Player(self.game, tile_object.x * self.map.scale, tile_object.y * self.map.scale)
@@ -58,3 +68,8 @@ class TombOfRasputin:
                         tile_object.y * self.map.scale,
                         tile_object.width * self.map.scale,
                         tile_object.height * self.map.scale)
+
+    def _info(self):
+        self.game.infos.append(Label('Level 1', "assets/fonts/blocks.ttf", 10, 10, font_size=42))
+        self.game.infos.append(
+            Label(f'Zombies: {len(self.zombies)}', "assets/fonts/pixel_square.ttf", 10, 80, font_size=24))

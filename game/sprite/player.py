@@ -1,9 +1,10 @@
 import pyganim
-from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN, key
+from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SPACE, key
 
-from settings import MOVE_SPEED, TILE_SIZE, DIRECTION_FRONT, DIRECTION_BACK, DIRECTION_LEFT, DIRECTION_RIGHT, \
-    PLAYER_BASE_PATH
 from game.sprite import animation_sprite
+from game.sprite.bullet import Bullet
+from settings import MOVE_SPEED, TILE_SIZE, DIRECTION_FRONT, DIRECTION_BACK, DIRECTION_LEFT, DIRECTION_RIGHT, \
+    PLAYER_BASE_PATH, SPRITE_DIMENSIONS_WIDTH, SPRITE_DIMENSIONS_HEIGHT
 
 
 def collide_hit_rect(one, two):
@@ -39,6 +40,10 @@ class Player(animation_sprite.AnimationSprite):
         elif press[K_DOWN]:
             self.direction = DIRECTION_FRONT
             self.speed_y += MOVE_SPEED
+
+        elif press[K_SPACE]:
+            Bullet(self.game, self.x + (SPRITE_DIMENSIONS_WIDTH / 2), self.y + (SPRITE_DIMENSIONS_HEIGHT / 2),
+                   self.direction, (self.game.level.bullets, self.game.all_sprites))
 
         if self.speed_x != 0 or self.speed_y != 0:
             self.is_walk = True

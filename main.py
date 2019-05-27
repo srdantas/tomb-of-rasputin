@@ -1,7 +1,10 @@
 from game.game import *
 
-g = Game()
-g.show_start_screen()
+game = Game()
+game.show_start_screen()
 while True:
-    g.run()
-    g.show_go_screen()
+    game.run()
+
+    if game.game_over:
+        game.game_over_screen()
+        game = Game()

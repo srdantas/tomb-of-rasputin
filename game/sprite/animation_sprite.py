@@ -3,7 +3,8 @@ from os import path
 import pyganim
 from pygame import sprite
 
-from settings import TILE_SIZE, DIRECTION_FRONT, DIRECTION_BACK, DIRECTION_LEFT, DIRECTION_RIGHT
+from settings import TILE_SIZE, DIRECTION_FRONT, DIRECTION_BACK, DIRECTION_LEFT, DIRECTION_RIGHT, \
+    SPRITE_DIMENSIONS_HEIGHT, SPRITE_DIMENSIONS_WIDTH
 
 
 def collide_hit_rect(one, two):
@@ -11,7 +12,8 @@ def collide_hit_rect(one, two):
 
 
 def get_animation_sheet(file, rows=1, cols=1):
-    images = pyganim.getImagesFromSpriteSheet(file, rows=rows, cols=cols, rects=[[TILE_SIZE] * 2 + [47, 60]])
+    images = pyganim.getImagesFromSpriteSheet(file, rows=rows, cols=cols, rects=[
+        [TILE_SIZE] * 2 + [SPRITE_DIMENSIONS_WIDTH, SPRITE_DIMENSIONS_HEIGHT]])
     frames = list(zip(images, [1] + ([100] * len(images))))
     return pyganim.PygAnimation(frames)
 
