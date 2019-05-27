@@ -15,41 +15,39 @@ class TombOfRasputinFactory:
         self.game = game
 
     def execute(self):
-        self.game.update_level(TombOfRasputin(self.game))
+        self.game.update_adventure(TombOfRasputin(self.game))
 
 
 class TombOfRasputin:
-    def __init__(self, game):
+    def __init__(self, game, level=Level1):
         self.game = game
         self.zombies = Group()
         self.bullets = Group()
         self.walls = Group()
 
-        self._actual = Level1(self)
-
-        self.map = self._actual.map
-        self.map_image = self._actual.map.make_map()
-        self.map_rect = self.map_image.get_rect()
-
         self.has_menu = False
         self.updated = False
+        self.finish = False
 
         self.player = None
 
-        # before all assert, create a game objects
-        self._actual.load_objects()
+        # before all assert, create a level
+        self._next_level(level(self))
 
     def update(self):
         self._actual.info()
         self.game_over()
 
-        if self._actual.next_level():
-            print('next level')
-
         self.updated = True
 
     def events(self, events):
-        pass
+        if self._actual.finish():
+            if not self._actual.is_end():
+                self.game.show_ended_screen()
+                self._next_level(self._actual.next_level())
+                self.game.show_go_screen()
+            else:
+                self.finish = True
 
     def game_over(self):
         if spritecollide(self.player, self.zombies, False) and self.updated:
@@ -69,3 +67,17 @@ class TombOfRasputin:
                         tile_object.y * self.map.scale,
                         tile_object.width * self.map.scale,
                         tile_object.height * self.map.scale)
+
+    def _next_level(self, level):
+        self._actual = level
+
+        self.map = self._actual.map
+        self.map_image = self._actual.map.make_map()
+        self.map_rect = self.map_image.get_rect()
+
+        if self.player:
+            self.player.kill()
+
+        self._actual.load_objects()
+
+        self.updated = False

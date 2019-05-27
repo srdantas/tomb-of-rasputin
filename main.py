@@ -15,3 +15,5 @@ while True:
     if game.game_over:
         game.show_game_over_screen()
         new_game()
+    elif game.adventure.finish:
+        new_game()

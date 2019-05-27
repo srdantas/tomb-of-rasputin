@@ -29,20 +29,20 @@ class Game:
 
         self.all_sprites = Group()
 
-        self.level = Home(self)
+        self.adventure = Home(self)
 
-        self.camera = Camera(self.level.map.width, self.level.map.height)
+        self.camera = Camera(self.adventure.map.width, self.adventure.map.height)
 
         self.game_over = False
 
-    def update_level(self, level):
+    def update_adventure(self, adventure):
         self.show_ended_screen()
 
-        self.level.player.kill()
+        self.adventure.player.kill()
         self.labels = list()
         self.infos = list()
 
-        self.level = level
+        self.adventure = adventure
         self._update_camera()
 
         self.show_go_screen()
@@ -58,18 +58,22 @@ class Game:
             if self.game_over:
                 break
 
+            if self.adventure.finish:
+                self.show_end_adventure_screen()
+                break
+
     def update(self):
         # update info
         self.infos = list()
 
-        self.level.update()
+        self.adventure.update()
         self.all_sprites.update()
 
-        self.camera.update(self.level.player)
+        self.camera.update(self.adventure.player)
 
     def draw(self):
-        if not self.level.has_menu:
-            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+        if not self.adventure.has_menu:
+            self.screen.blit(self.adventure.map_image, self.camera.apply_rect(self.adventure.map_rect))
 
             for sprite in self.all_sprites:
                 self.screen.blit(sprite.image, self.camera.apply(sprite))
@@ -80,14 +84,14 @@ class Game:
             for info in self.infos:
                 self.screen.blit(info.surface, info.rect)
 
-            for zombie in self.level.zombies:
+            for zombie in self.adventure.zombies:
                 zombie.draw_health()
 
         display.flip()
 
     def events(self):
         events = key_event.get()
-        if not self.level.has_menu:
+        if not self.adventure.has_menu:
             for event in events:
                 if event.type == QUIT:
                     self.__quit__()
@@ -95,7 +99,7 @@ class Game:
                     if event.key == K_ESCAPE:
                         self.__quit__()
 
-        self.level.events(events)
+        self.adventure.events(events)
 
     def show_start_screen(self):
         pass
@@ -107,7 +111,7 @@ class Game:
         for alpha in range(255, 0, -1):
             start_display.fill((0, 0, 0, alpha))
 
-            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+            self.screen.blit(self.adventure.map_image, self.camera.apply_rect(self.adventure.map_rect))
             self.screen.blit(start_display, (0, 0))
 
             display.flip()
@@ -120,7 +124,7 @@ class Game:
         for alpha in range(255):
             start_display.fill((0, 0, 0, alpha))
 
-            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+            self.screen.blit(self.adventure.map_image, self.camera.apply_rect(self.adventure.map_rect))
             self.screen.blit(start_display, (0, 0))
 
             display.flip()
@@ -147,8 +151,30 @@ class Game:
 
             time.delay(10)
 
+    def show_end_adventure_screen(self):
+        end_surface = Surface((WIDTH, HEIGHT), SRCALPHA)
+        end_text = Label('Good Nice!', 'assets/fonts/blocks.ttf', 20, (HEIGHT / 2) - 100, font_size=72)
+        score_text = Label('You finish this adventure with success', 'assets/fonts/future_narrow.ttf', 20,
+                           (HEIGHT / 2) - 120, font_size=24)
+
+        return_text = Label('You will return to home and see you score ranking', 'assets/fonts/future_narrow.ttf', 20,
+                            (HEIGHT / 2) - 160,
+                            font_size=24)
+        for alpha in range(255):
+            end_surface.fill((0, 0, 0, alpha))
+
+            self.screen.blit(end_surface, (0, 0))
+
+            self.screen.blit(end_text.surface, end_text.rect)
+            self.screen.blit(score_text.surface, score_text.rect)
+            self.screen.blit(return_text.surface, return_text.rect)
+
+            display.flip()
+
+            time.delay(10)
+
     def _update_camera(self):
-        self.camera = Camera(self.level.map.width, self.level.map.height)
+        self.camera = Camera(self.adventure.map.width, self.adventure.map.height)
 
     @staticmethod
     def __quit__():

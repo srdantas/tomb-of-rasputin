@@ -43,7 +43,7 @@ class Player(animation_sprite.AnimationSprite):
 
         elif press[K_SPACE]:
             Bullet(self.game, self.x + (SPRITE_DIMENSIONS_WIDTH / 2), self.y + (SPRITE_DIMENSIONS_HEIGHT / 2),
-                   self.direction, (self.game.level.bullets, self.game.all_sprites))
+                   self.direction, (self.game.adventure.bullets, self.game.all_sprites))
 
         if self.speed_x != 0 or self.speed_y != 0:
             self.is_walk = True

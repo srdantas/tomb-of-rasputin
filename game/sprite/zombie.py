@@ -50,7 +50,7 @@ class Zombie(animation_sprite.AnimationSprite):
             draw.rect(self.image, GREEN, health_bar)
 
     def _update_health(self):
-        hit = spritecollideany(self, self.game.level.bullets, False)
+        hit = spritecollideany(self, self.game.adventure.bullets, False)
         if hit:
             self.health -= ATTACK_DAMAGE
             hit.kill()
@@ -59,7 +59,7 @@ class Zombie(animation_sprite.AnimationSprite):
             self.kill()
 
     def _get_distance_player_x(self):
-        return self.x - self.game.level.player.x
+        return self.x - self.game.adventure.player.x
 
     def _get_distance_player_y(self):
-        return self.y - self.game.level.player.y
+        return self.y - self.game.adventure.player.y

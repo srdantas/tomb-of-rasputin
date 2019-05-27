@@ -31,5 +31,5 @@ class Bullet(Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
-        if spritecollideany(self, self.game.level.walls, False):
+        if spritecollideany(self, self.game.adventure.walls, False):
             self.kill()
