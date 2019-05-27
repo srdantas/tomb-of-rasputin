@@ -36,12 +36,16 @@ class Game:
         self.game_over = False
 
     def update_level(self, level):
+        self.show_ended_screen()
+
         self.level.player.kill()
         self.labels = list()
         self.infos = list()
 
         self.level = level
         self._update_camera()
+
+        self.show_go_screen()
 
     def run(self):
         self.playing = True
@@ -60,6 +64,7 @@ class Game:
 
         self.level.update()
         self.all_sprites.update()
+
         self.camera.update(self.level.player)
 
     def draw(self):
@@ -100,6 +105,19 @@ class Game:
 
         start_display = Surface((WIDTH, HEIGHT), SRCALPHA)
         for alpha in range(255, 0, -1):
+            start_display.fill((0, 0, 0, alpha))
+
+            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+            self.screen.blit(start_display, (0, 0))
+
+            display.flip()
+            time.delay(10)
+
+    def show_ended_screen(self):
+        self.update()
+
+        start_display = Surface((WIDTH, HEIGHT), SRCALPHA)
+        for alpha in range(255):
             start_display.fill((0, 0, 0, alpha))
 
             self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))

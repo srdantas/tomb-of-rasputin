@@ -26,7 +26,7 @@ class TombOfRasputin:
         self.bullets = Group()
         self.walls = Group()
 
-        self.map = TiledMap('assets/maps/tomb_of_raspitun/level_1.tmx')
+        self.map = TiledMap('assets/maps/tomb_of_rasputin/level_1.tmx')
         self.map_image = self.map.make_map()
         self.map_rect = self.map_image.get_rect()
 
