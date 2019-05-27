@@ -1,7 +1,6 @@
 import sys
-import time as sys_timer
 
-from pygame import QUIT, KEYDOWN, K_ESCAPE, display, quit, time, init, key, font, Surface
+from pygame import QUIT, KEYDOWN, K_ESCAPE, display, quit, time, init, key, font, Surface, SRCALPHA
 from pygame import event as key_event
 from pygame.sprite import Group
 
@@ -50,8 +49,7 @@ class Game:
         while self.playing:
             self.events()
             self.update()
-            if not self.level.has_menu:
-                self.draw()
+            self.draw()
 
             if self.game_over:
                 break
@@ -65,19 +63,20 @@ class Game:
         self.camera.update(self.level.player)
 
     def draw(self):
-        self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+        if not self.level.has_menu:
+            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
 
-        for sprite in self.all_sprites:
-            self.screen.blit(sprite.image, self.camera.apply(sprite))
+            for sprite in self.all_sprites:
+                self.screen.blit(sprite.image, self.camera.apply(sprite))
 
-        for label in self.labels:
-            self.screen.blit(label.surface, self.camera.apply_rect(label.rect))
+            for label in self.labels:
+                self.screen.blit(label.surface, self.camera.apply_rect(label.rect))
 
-        for info in self.infos:
-            self.screen.blit(info.surface, info.rect)
+            for info in self.infos:
+                self.screen.blit(info.surface, info.rect)
 
-        for zombie in self.level.zombies:
-            zombie.draw_health()
+            for zombie in self.level.zombies:
+                zombie.draw_health()
 
         display.flip()
 
@@ -96,19 +95,39 @@ class Game:
     def show_start_screen(self):
         pass
 
-    def game_over_screen(self):
-        game_over_display = Surface((WIDTH, HEIGHT))
-        game_over_display.fill(BLACK)
-        game_over_text = Label('Game Over', "assets/fonts/blocks.ttf", 20, (HEIGHT / 2) - 100, font_size=72)
-        score_text = Label('For save the score you need finish adventure', "assets/fonts/future_narrow.ttf", 20,
+    def show_go_screen(self):
+        self.update()
+
+        start_display = Surface((WIDTH, HEIGHT), SRCALPHA)
+        for alpha in range(255, 0, -1):
+            start_display.fill((0, 0, 0, alpha))
+
+            self.screen.blit(self.level.map_image, self.camera.apply_rect(self.level.map_rect))
+            self.screen.blit(start_display, (0, 0))
+
+            display.flip()
+            time.delay(10)
+
+    def show_game_over_screen(self):
+        game_over_display = Surface((WIDTH, HEIGHT), SRCALPHA)
+        game_over_text = Label('Game Over', 'assets/fonts/blocks.ttf', 20, (HEIGHT / 2) - 100, font_size=72)
+        score_text = Label('For save the score you need finish adventure', 'assets/fonts/future_narrow.ttf', 20,
                            (HEIGHT / 2) - 120, font_size=24)
-        self.screen.blit(game_over_display, (0, 0))
-        self.screen.blit(game_over_text.surface, game_over_text.rect)
-        self.screen.blit(score_text.surface, score_text.rect)
 
-        display.flip()
+        return_text = Label('You will return to home', 'assets/fonts/future_narrow.ttf', 20, (HEIGHT / 2) - 160,
+                            font_size=24)
+        for alpha in range(255):
+            game_over_display.fill((0, 0, 0, alpha))
 
-        sys_timer.sleep(10)
+            self.screen.blit(game_over_display, (0, 0))
+
+            self.screen.blit(game_over_text.surface, game_over_text.rect)
+            self.screen.blit(score_text.surface, score_text.rect)
+            self.screen.blit(return_text.surface, return_text.rect)
+
+            display.flip()
+
+            time.delay(10)
 
     def _update_camera(self):
         self.camera = Camera(self.level.map.width, self.level.map.height)
