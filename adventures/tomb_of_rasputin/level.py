@@ -6,6 +6,7 @@ class Level1:
     def __init__(self, adventure):
         self.adventure = adventure
         self.map = TiledMap('assets/maps/tomb_of_rasputin/level_1.tmx')
+        self.level_score = 1
 
     def load_objects(self):
         for tile_object in self.map.tiled_map.objects:
@@ -20,6 +21,11 @@ class Level1:
         self.adventure.game.infos.append(Label('Level 1', "assets/fonts/blocks.ttf", 10, 10, font_size=42))
         self.adventure.game.infos.append(
             Label(f'Zombies: {len(self.adventure.zombies)}', "assets/fonts/pixel_square.ttf", 10, 80, font_size=24))
+
+        self.adventure.game.infos.append(
+            Label(f'Score: {self.adventure.game.score.calculate_score()}', "assets/fonts/pixel_square.ttf", 10,
+                  110,
+                  font_size=16))
 
     def finish(self):
         return len(self.adventure.zombies) == 0
@@ -36,6 +42,7 @@ class Level2:
     def __init__(self, adventure):
         self.adventure = adventure
         self.map = TiledMap('assets/maps/tomb_of_rasputin/level_2.tmx')
+        self.level_score = 2
 
     def load_objects(self):
         for tile_object in self.map.tiled_map.objects:
@@ -50,6 +57,10 @@ class Level2:
         self.adventure.game.infos.append(Label('Level 2', "assets/fonts/blocks.ttf", 10, 10, font_size=42))
         self.adventure.game.infos.append(
             Label(f'Zombies: {len(self.adventure.zombies)}', "assets/fonts/pixel_square.ttf", 10, 80, font_size=24))
+        self.adventure.game.infos.append(
+            Label(f'Score: {self.adventure.game.score.calculate_score()}', "assets/fonts/pixel_square.ttf", 10,
+                  110,
+                  font_size=16))
 
     def finish(self):
         return len(self.adventure.zombies) == 0

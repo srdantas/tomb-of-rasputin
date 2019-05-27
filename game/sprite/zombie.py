@@ -56,6 +56,7 @@ class Zombie(animation_sprite.AnimationSprite):
             hit.kill()
 
         if self.health <= 0:
+            self.game.score.add_kill()
             self.kill()
 
     def _get_distance_player_x(self):

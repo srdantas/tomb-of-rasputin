@@ -7,6 +7,7 @@ from pygame.sprite import Group
 from game.camera import Camera
 from game.home import Home
 from game.label import Label
+from game.score import Score
 from settings import *
 
 
@@ -32,6 +33,7 @@ class Game:
         self.adventure = Home(self)
 
         self.camera = Camera(self.adventure.map.width, self.adventure.map.height)
+        self.score = Score("Renato")
 
         self.game_over = False
 
@@ -46,6 +48,8 @@ class Game:
         self._update_camera()
 
         self.show_go_screen()
+
+        self.score.start_adventure(adventure.level.level_score)
 
     def run(self):
         self.playing = True
@@ -154,7 +158,7 @@ class Game:
     def show_end_adventure_screen(self):
         end_surface = Surface((WIDTH, HEIGHT), SRCALPHA)
         end_text = Label('Good Nice!', 'assets/fonts/blocks.ttf', 20, (HEIGHT / 2) - 100, font_size=72)
-        score_text = Label('You finish this adventure with success', 'assets/fonts/future_narrow.ttf', 20,
+        score_text = Label(f'Score: {self.score.calculate_score()}', 'assets/fonts/future_narrow.ttf', 20,
                            (HEIGHT / 2) - 120, font_size=24)
 
         return_text = Label('You will return to home and see you score ranking', 'assets/fonts/future_narrow.ttf', 20,

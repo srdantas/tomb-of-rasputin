@@ -35,16 +35,16 @@ class TombOfRasputin:
         self._next_level(level(self))
 
     def update(self):
-        self._actual.info()
+        self.level.info()
         self.game_over()
 
         self.updated = True
 
     def events(self, events):
-        if self._actual.finish():
-            if not self._actual.is_end():
+        if self.level.finish():
+            if not self.level.is_end():
                 self.game.show_ended_screen()
-                self._next_level(self._actual.next_level())
+                self._next_level(self.level.next_level())
                 self.game.show_go_screen()
             else:
                 self.finish = True
@@ -69,15 +69,17 @@ class TombOfRasputin:
                         tile_object.height * self.map.scale)
 
     def _next_level(self, level):
-        self._actual = level
+        self.level = level
 
-        self.map = self._actual.map
-        self.map_image = self._actual.map.make_map()
+        self.map = self.level.map
+        self.map_image = self.level.map.make_map()
         self.map_rect = self.map_image.get_rect()
 
         if self.player:
             self.player.kill()
 
-        self._actual.load_objects()
+        self.level.load_objects()
+
+        self.game.score.add_level_score(level.level_score)
 
         self.updated = False
