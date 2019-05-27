@@ -23,4 +23,4 @@ class Score:
     def calculate_score(self):
         self.end_time = time.time()
         total_time = self.end_time - self.start_time
-        return "{0:.2f}".format((self.kills * self.level_score) / total_time)
+        return "{0:.2f}".format(((self.kills * self.level_score) / total_time) * 100)
