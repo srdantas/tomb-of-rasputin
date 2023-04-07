@@ -21,7 +21,8 @@ class Home:
 
         self.finish = False
 
-        self.adventures_menu = pygameMenu.Menu(game.screen, WIDTH, HEIGHT, 'assets/fonts/blocks.ttf',
+        self.adventures_menu = pygame_menu
+        .Menu(game.screen, WIDTH, HEIGHT, 'assets/fonts/blocks.ttf',
                                                "Adventures", dopause=False)
         self._close_menu()
 
