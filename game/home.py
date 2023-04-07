@@ -1,4 +1,4 @@
-import pygameMenu
+import pygame_menu
 from pygame import QUIT, K_ESCAPE, KEYDOWN, K_SPACE
 from pygame.sprite import Group
 from pygame.sprite import spritecollide, collide_circle
